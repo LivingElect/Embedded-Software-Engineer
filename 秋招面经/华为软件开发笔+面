@@ -1,0 +1,245 @@
+# 一、笔试题目描述
+有一个大小为M*N的蜂巢，有一部分被污染了，问没有被污染的部分可以分成几个区域
+输入只能是M*N大小的二维数组；字符只能是	'C'	和	'P'；
+输入描述
+2
+3
+P P C
+C P C
+输出描述
+2
+​
+
+如果看过的话应该好做，用广度搜索算法就行吧 然后迭代就挺简单的额（当时就是不知道有哪写步骤没有考虑全吧）
+示例
+```cpp
+#include<iostream>
+#include<string>
+#include<queue>
+#include <vector>
+#include <set>
+#include <algorithm>
+#include <functional>
+
+using namespace std;
+int n, m;
+char c;
+int a[256][256];
+int ans = 0;
+
+void dfs(int x, int y)
+{
+	int div[4][2] = { {1,0},{0,1},{0,-1},{-1,0} };
+	for (int i = 0; i < 4; i++)
+	{
+		int e = x + div[i][0];
+		int f = y + div[i][1];
+		if (e >= 0 && e < n && f >= 0 && f < m && a[e][f] == 1)
+		{
+			a[e][f] = 0;
+			dfs(e,f);
+		}
+	}
+
+}
+
+int main()
+{
+	cin >> n >> m;
+	for(int i = 0;i < n; i++)
+	{
+		for (int j = 0; j < m; j++)
+		{
+			cin >> c;
+			if (c == 'P') a[i][j] = 0;
+			else
+			{
+				a[i][j] = 1;
+			}
+		}
+	}
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < m; j++)
+		{
+			if (a[i][j] != 0)
+			{
+				ans++;
+				dfs(i, j);
+			}
+		}
+	}
+	cout << ans;
+	system("pause");
+	return 0;
+
+}
+```
+![image.png](https://cdn.nlark.com/yuque/0/2021/png/812258/1626597765170-3d98e4f8-f82e-4659-a77e-8d92391d2058.png#clientId=u76cc37fe-30f9-4&from=paste&height=184&id=u034e841a&margin=%5Bobject%20Object%5D&name=image.png&originHeight=142&originWidth=700&originalType=binary&ratio=1&size=12338&status=done&style=none&taskId=uf3fd677b-f969-4cf4-a6c9-11d9e9dab24&width=905)
+# 二、笔试题目描述
+推箱子的问题
+有N个箱子排成N行，每个箱子都能被推到指定位置
+如果
+0
+1
+2
+3
+0
+1
+2
+1
+2
+有9个箱子这么放置一次只能推动一个单位，但是可以推多个箱子；
+求计算最少需要推多少次箱子
+​
+
+输入 0 1 2 3 0 1 2 1 2 
+输出 6
+​
+
+感觉这个题目有些坑，我起始想错了思路然后，我最后只拿到45的案例，具体忘记怎么思考的了；
+差不多的代码如下，还需要考虑一些非法值什么的就完美了
+```cpp
+#include<iostream>
+#include<string>
+#include<queue>
+#include <vector>
+#include <set>
+#include <algorithm>
+#include <functional>
+
+using namespace std;
+
+const int maxn = 1e5+10;
+int a[maxn] = { 0 };
+int b[maxn] = { 0 };
+
+int main()
+{
+	int n = 0;
+	int f;
+	int ans = 0;
+	while (cin >> f)
+	{		
+		a[++n] = f;
+		if (n == 9)
+		{
+			break;
+		}
+	}
+
+	for (int i = 1; i < maxn; i++)
+	{
+		b[i] = a[i] - a[i - 1];
+	}
+	for (int i = 1; i < maxn; i++)
+	{
+		if (b[i] > 0)
+		{
+			ans += b[i];
+		}
+	}
+	cout << ans << endl;
+	system("pause");
+	return 0;
+
+}
+```
+应该是需要考虑边界啊什么的，非法值啊什么的 我都没有考虑，时间上确实有点不充足
+​
+
+# 三、笔试题目描述
+网络有n个节点,编号为1-n,第i个节点的吞吐量为2^i。每个节点只有一条路通往其他节点。由于电力不足,想把其中k个节点关闭，同时希望剩余节点互通并且吞吐里是最大的，那么应该关闭哪些节点呢?
+​
+
+输入描述:
+第一行有2个整数n和k(1 <= k < n <= 10^6):n代表节点总数，k代表要关闭的节点个数,
+接下来n -1行每行有2个整数u和v(1 <= u,  v <= n,u ≠ v),代表节点u和v之间有一条路
+​
+
+题目保证每两个节点之间只有一条路。
+​
+
+输出描述:
+升序输出k个被关闭的节点编号,用空格分开。
+​
+
+输入eg
+6 3
+2 1
+2 6
+4 2
+5 6
+2 3
+​
+
+输出eg
+1 3 4
+```cpp
+没有具体做出来，总是超时，骗了一点例子，就不复代码了
+```
+# 四、面试
+一面，首先是算法题求最长子序列和，这个很简单，直接遍历就ok，面试官也觉得第一个办法太简单，问我有没有复杂度低的，动态规划写写就行附代码
+```cpp
+#include<iostream>
+using namespace std;
+int maxm,a[100],sum;
+int start,end;// record the index of the subsequence
+int main(){
+    int n;
+    cin>>n;
+    for(int i=0;i<n;i++) cin>>a[i];
+    for(int i=0;i<n;i++){
+        sum += a[i];
+        if(sum > maxm) {
+            maxm = sum;
+            end = i; 
+        } 
+        else if(sum < 0) {
+            sum = 0;
+            start = i+1;
+        }
+    }
+    cout<<maxm<<endl;
+    cout<<"from "<<start<<" to "<<end;
+}
+```
+面试官问我爱不爱看书，其实不是很爱看，就回答了四大名著(计算机操作系统，数据结构和算法，计算机组成原理，计算机网络)。 
+ 	二面，首先自我介绍，项目经历，比赛经验等等等，然后手撕代码字符串匹配让写写KMP算法吧，这个现场手撕属实有难度，但没办法，只能硬着头皮写，还好这道题比较经典，掰着掰着写对了，临走前面试官冲我笑了笑，可算面完二面了。 
+ 	三面问了许多没什么关系的问题，但是基本围绕简历展开，愁云惨淡，比如，你碰到过最失败的事情是什么，最有成就感的事情呀什么的
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
+​
+
