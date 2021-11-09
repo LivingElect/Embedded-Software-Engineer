@@ -1,2 +1,3 @@
 # Embedded-Software-Engineer
-Autumn recruitment record and interview skills
+The article is to introduce my Autumn recruitment record and interview skills;<br>
+
